@@ -1,0 +1,52 @@
+/**
+ * This is a 16 bit comparator.
+ *
+ *  if  a==b then out=true
+ *  else out=false
+ *
+ */
+CHIP Comparator16 {
+
+    IN  a[16], b[16];
+    OUT out;
+
+    PARTS:
+
+	Comparator(a=a[0], b=b[0], out=out0);
+	Comparator(a=a[1], b=b[1], out=out1);
+	Comparator(a=a[2], b=b[2], out=out2);
+	Comparator(a=a[3], b=b[3], out=out3);
+	Comparator(a=a[4], b=b[4], out=out4);
+	Comparator(a=a[5], b=b[5], out=out5);
+	Comparator(a=a[6], b=b[6], out=out6);
+	Comparator(a=a[7], b=b[7], out=out7);
+	Comparator(a=a[8], b=b[8], out=out8);
+	Comparator(a=a[9], b=b[9], out=out9);
+	Comparator(a=a[10], b=b[10], out=out10);
+	Comparator(a=a[11], b=b[11], out=out11);
+	Comparator(a=a[12], b=b[12], out=out12);
+	Comparator(a=a[13], b=b[13], out=out13);
+	Comparator(a=a[14], b=b[14], out=out14);
+	Comparator(a=a[15], b=b[15], out=out15);
+    
+    And(a=out0, b=out1, out=w1);
+    And(a=out2, b=out3, out=w2);
+    And(a=out4, b=out5, out=w3);
+    And(a=out6, b=out7, out=w4);
+    And(a=out8, b=out9, out=w5);
+    And(a=out10, b=out11, out=w6);
+    And(a=out12, b=out13, out=w7);
+    And(a=out14, b=out15, out=w8);
+
+    And(a=w1, b=w2, out=x1);
+    And(a=w3, b=w4, out=x2);
+    And(a=w5, b=w6, out=x3);
+    And(a=w7, b=w8, out=x4);
+
+    And(a=x1, b=x2, out=z1);
+    And(a=x3, b=x4, out=z2);
+
+    And(a=z1, b=z2, out=out);
+    
+
+}

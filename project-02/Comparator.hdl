@@ -1,0 +1,18 @@
+/**
+ * This is a simple 1 bit comparator.
+ *  if  a==b then out = true
+ *  else out=false
+ *
+ *  The implementation is a XNOR gate.
+ */
+CHIP Comparator {
+
+    IN  a,b;
+    OUT out;
+
+    PARTS:
+
+    Xor(a=a, b=b, out=xorout);
+    Not(in=xorout, out=out);
+
+}

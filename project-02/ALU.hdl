@@ -42,7 +42,29 @@ CHIP ALU {
 
     PARTS:
     
+    //handle x    
+    Mux16(a=x, b=false, sel=zx, out=out1x);
+    Not16(in=out1x, out=notout1x);
+    Mux16(a=out1x, b=notout1x, sel=nx, out=out2x);
 
+    //handle y
+    Mux16(a=y, b=false, sel=zy, out=out1y);
+    Not16(in=out1y, out=notout1y);
+    Mux16(a=out1y, b=notout1y, sel=ny, out=out2y);
 
+    //handle & / +
+    And16(a=out2x, b=out2y, out=out3);
+    Add16(a=out2x, b=out2y, out=out4);
+
+    //handle output
+    Mux16(a=out3, b=out4, sel=f, out=out5);
+    Not16(in=out5, out=notout5);
+    Mux16(a=out5, b=notout5, sel=no, out=out, out=check, out[15]=MSB);
+
+    // see if out is 0
+    Comparator16(a=check, b[0..15]=false, out=zr);
+
+    // check out MSB to see if out < 0
+    Comparator(a=MSB, b=true, out=ng);
     
 }
