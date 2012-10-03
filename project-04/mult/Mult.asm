@@ -6,73 +6,51 @@
 // Multiplies R0 and R1 and stores the result in R2.
 // (R0, R1, R2 refer to RAM[0], RAM[1], and RAM[3], respectively.)
 
-// Put your code here.
 
-	@R2
-    M=0   // init R2 = 0
+// we ignore negative numbers
+// a side effect is that we modify R1 value
 
-	//if R0 = 1 => R0*R1=R1
-	@R0
-	D=M-1
-	@ONE
-	D;JEQ
+    // init R2 = 0
+    @R2
+    M=0   
 
-	//if R1 = 1 => R0*R1=R0
-	@R1
-	D=M-1
-	@TWO
-	D;JEQ
-	
-	@temp
-	M=0
-
+    //if R0 <= 0 => R2=R0*R1=0
+    @R0
+    D=M
+    @END
+    D;JLE
+    
+    //if R1 <= 0 => R2=R0*R1=0
+    @R1
+    D=M
+    @END
+    D;JLE
+    
 (LOOP)
 
-	@R0
-	D=M
-	
-	@R2
-	M=M+D
+    //D=R0
+    @R0
+    D=M
+    
+    // R2=R0+R0+ ... (R1 times)
+    @R2
+    M=M+D
 
-	@sum
-	
-	@R1
-	temp=M-1
+    //decrease R1 value
+    @R1
+    D=M-1
+    M=D
 
-	@END
-	temp;JEQ
+    //break loop
+    @END
+    D;JEQ
 
-	@LOOP
-    0;JMP  // Goto LOOP
-
-
-(ONE)
-
-	@R1
-	A=M
-
-	@R2
-	M=A
-
-	//go to end
-	@END
-   	0;JMP
-
-
-(TWO)
-
-	@R0
-	A=M
-
-	@R2
-	M=A
-
-	//go to end
-	@END
-   	0;JMP
+    //repeat
+    @LOOP
+    0;JMP 
 
 
 (END)
-   	@END
-   	0;JMP  // Infinite loop	
+    @END
+    0;JMP  // Infinite loop 
 
