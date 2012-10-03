@@ -14,17 +14,17 @@
     @R2
     M=0   
 
-    //if R0 <= 0 => R2=R0*R1=0
+    //if R0=0 => R2=R0*R1=0
     @R0
     D=M
     @END
-    D;JLE
+    D;JEQ
     
-    //if R1 <= 0 => R2=R0*R1=0
+    //if R1=0 => R2=R0*R1=0
     @R1
     D=M
     @END
-    D;JLE
+    D;JEQ
     
 (LOOP)
 
