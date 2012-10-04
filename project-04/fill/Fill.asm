@@ -9,20 +9,26 @@
 // the screen should be cleared.
 
 
+    //D=-1
+    D=1
+    D=!D
+    D=D+1
 
-	D=1
-	D=!D
-	D=D+1
+    //R0=-1 (in binary this will allow us to draw a 16 pixel line)
+    @R0
+    M=D
 
-	//save unit in R0
-	@R0
-	M=D
+    //R1=16384 (first screen address)
+    @SCREEN
+    D=A    
+    @R1
+    M=D
 
-	//set R1=
-	@32
-	D=M
-	@R1
-	M=D
+    //R2=32*256 (number of 16 bit pixel lines to cover the entire screen)
+    @8192
+    D=A
+    @R2
+    M=D
 
 //main loop
 (LOOP)
@@ -31,11 +37,11 @@
      @KBD
      D=M
 
-     // if a key is not pressed the screen is white
+     // if a key is not pressed, draw white screen
     @WHITE
     D;JEQ
 
-    // if a key is pressed the screen is black
+    // if a key is pressed, draw black screen
     @BLACK
     D;JNE
     
@@ -46,8 +52,6 @@
 
 //draw white screen
 (WHITE)
-    @SCREEN
-    M=0
 	
 
 	//go to main loop
@@ -58,27 +62,32 @@
 //draw black screen
 (BLACK)	
 
-	//load unit
+	//D=-1
 	@R0
 	D=M
+	
+    @R1    
+    //set current address to begin drawing
+    A=M
 
-	//draw first 16 pixels	
-    @SCREEN
+    //draw first 16 pixels black line 
     M=D
-    
-    A=A+1
-    M=D
+   
+    //move to next line
+    @R1
+    M=M+1
 
-    @R1	
+    //D=Memory[R2]; decrease pointer
+    @R2
+    M=M-1
     D=M
-    D=D-1
-
+ 
     @BLACK
     D;JGT
 
-  	//go to main loop
     @LOOP
     0;JMP
+
 
 
 
