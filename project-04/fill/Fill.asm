@@ -30,18 +30,19 @@
     @R2
     M=D
 
+
 //main loop
 (LOOP)
 
-     //read the keyboard
-     @KBD
-     D=M
+    //read the keyboard
+    @KBD
+    D=M
 
-     // if a key is not pressed, draw white screen
+     //if a key is not pressed, draw white screen
     @WHITE
     D;JEQ
 
-    // if a key is pressed, draw black screen
+    //if a key is pressed, draw black screen
     @BLACK
     D;JNE
     
@@ -53,8 +54,29 @@
 //draw white screen
 (WHITE)
 	
+	//set address to begin drawing
+    @R1    
+    A=M
 
-	//go to main loop
+    //draw first 16 pixels white line 
+    M=0
+   
+    //decrease value so we know when to stop iteration
+    @R2
+    M=M-1
+    D=M
+
+    //finished drawing
+	@STOP
+    D;JLE
+ 
+    //save the next location of the white line
+    @R1
+    M=M+1
+
+    @WHITE
+    D;JGT
+
     @LOOP
     0;JMP
 
@@ -66,22 +88,26 @@
 	@R0
 	D=M
 	
+	//set address to begin drawing
     @R1    
-    //set current address to begin drawing
     A=M
 
     //draw first 16 pixels black line 
     M=D
    
-    //move to next line
-    @R1
-    M=M+1
-
-    //D=Memory[R2]; decrease pointer
+    //decrease value so we know when to stop iteration
     @R2
     M=M-1
     D=M
+
+    //finished drawing
+	@STOP
+    D;JLE
  
+    //save the next location of the black line
+    @R1
+    M=M+1
+
     @BLACK
     D;JGT
 
@@ -89,8 +115,20 @@
     0;JMP
 
 
+(STOP)
+	
+	//re-init R1, R2
+    @SCREEN
+    D=A    
+    @R1
+    M=D
 
+    @8192
+    D=A
+    @R2
+    M=D
 
-
+	@LOOP
+    0;JMP
 
 
